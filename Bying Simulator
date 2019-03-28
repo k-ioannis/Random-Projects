@@ -1,0 +1,111 @@
+package askhsh7;
+
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class Askhsh7 {
+
+    public void static main(String[] args) {
+        int[] passwords = {1, 2, 3, 4, 5, 6};
+        int[] quantities = {22, 5, 2, 4, 80, 1};
+        String[] ITEMS = {"ITEM1", "ITEM2", "ITEM3", "ITEM4", "ITEM5", "ITEM6"};
+        int[] prices = {100, 50, 40, 22, 39, 89};
+        Scanner scan = new Scanner(System.in);
+        String answ;
+        int pass, FLAG = 0;
+        Invoice Customer = new Invoice();
+        do {
+            if (FLAG == 0) {
+                System.out.println("DO YOU WISH TO BUY AN ITEMS ? IF YOU WANT TYPE  'yes' ELSE TYPE 'no' ");
+                answ = scan.nextLine();
+                if (answ == "no") {
+                    break;
+                }
+            }
+            System.out.println("CHOOSE THE PASSWORD THAT REPRESENTS THE ITEM YOU WANT");
+            System.out.println(ITEMS);
+            System.out.println(passwords);
+            pass = scan.nextInt();
+            if (Chek4Availability(quantities, pass) == null) {
+                do {
+                System.out.println("CHOOSE THE PASSWORD THAT REPRESENTS THE ITEM YOU WANT");
+                System.out.println(ITEMS);
+                System.out.println(passwords);
+            pass = scan.nextInt();
+                }while(Chek4Availability(quantities, pass) != null);
+            }
+            Customer.ListingItems(pass, ITEMS);
+            Customer.Price(prices[pass - 1]);
+            System.out.print("DO YOU WANT TO BUY AN NEW ITEM ? TYPE  'yes' ELSE TYPE 'no'");
+            answ = scan.nextLine();
+            FLAG += 1;
+        } while (answ == "yes");
+        System.out.println("TYPE IN YOUR NAME :");
+        String name = scan.nextLine();
+        Customer.Name(name);
+        System.out.println("TYPE IN YOUR SHIPPING ADDRESS");
+        String address = scan.nextLine();
+        Customer.Address(address);
+        System.out.println("TYPE IN YOUR BILLING ADDRESS");
+        String Baddress = scan.nextLine();
+        Customer.Baddress(address);
+        Customer.Payment(FLAG);
+    }
+
+    public static int[] Chek4Availability(int[] quant, int pass) {
+        if (quant[pass - 1] > 0 && pass >= 0 && pass <= 6) {
+            System.out.println("the item you want is available");
+            quant[pass - 1] += -1;
+        } else {
+            System.out.println("the item you want is not available");
+            return null;
+        }
+        return quant;
+    }
+
+    public class Invoice {
+
+        int totalprice = 0, X;
+        ArrayList invoice = new ArrayList();
+        ArrayList<String> items = new ArrayList();
+        Scanner scan = new Scanner(System.in);
+        public Invoice() {
+
+        }
+
+        public void Price(int tempoprice) {
+            totalprice = tempoprice;
+            invoice.set(0, totalprice);
+        }
+
+        public void Name(String temponame) {
+            invoice.add(temponame);
+        }
+
+        public void Address(String address) {
+            invoice.add(address);
+        }
+
+        public void Baddress(String address) {
+            invoice.add(address);
+        }
+
+        public void ListingItems(int pass, String[] itemslist) {
+            items.add(itemslist[pass - 1]);
+        }
+
+        public void Payment( int totalitems) {
+            System.out.println("YOUR TOTAL PRICE IS " + totalprice);
+            System.out.println("TYPE IN YOUR PAYMENT AMONT");
+            int payment = scan.nextInt();
+            if (totalprice - payment < 0) {
+                System.out.println("YOUR PAYMENT WAS NOT SUCCES FULL AMOUNT DUE :" + (totalprice - payment));
+            } else {
+                System.out.println("YOUR PAYMENT WAS SUCCESFULL THANK YOU FOR PREFERING OUR SERVICES");
+                System.out.println("INVOICE :" + "\n" + "TOTALPRICE :  " + invoice.get(0) + "\n" + "SUM OF ITEMS :  " + totalitems + "\n"
+                        + "SHIPPING ADDRESS :  " + invoice.get(1) + "\n" + "BILLING ADDRESS" + invoice.get(2));
+            }
+        }
+
+    }
+}

@@ -1,0 +1,103 @@
+package askhsh8;
+
+import java.util.Scanner;
+
+public class Askhsh8 {
+
+    public static void main(String[] args) {
+        int Xpos, Opos;
+        char pos[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        System.out.println("INITIATING GAME...");
+        PrintBoard(pos);
+        System.out.println(" THE PLAYER WITH X GOES FIRST");
+        String EXITcond,EXITcond2;
+        do {
+            PlayerX(pos);
+            EXITcond = Check4Victor(pos);
+            EXITcond2 =Check4Tie(pos);
+            if (EXITcond == "Player1") break;
+            if (EXITcond2 == "TIE") break;
+            PlayerY(pos);
+            EXITcond = Check4Victor(pos);
+            if (EXITcond == "Player2") break;
+            
+        }while (EXITcond == "No Winner"  &&  EXITcond2 == "Not Tie");
+        
+        if(Check4Tie(pos) == "TIE"){
+            System.out.println("THE GAME IS TIE");
+        }else{
+        System.out.println(" _ _ ENDGAME_ _ ");
+        System.out.println("The Winnwe is :  "+Check4Victor(pos));
+        }
+    }
+    
+    
+
+    public static void PrintBoard(char[] pos) {
+        System.out.print(pos[0] + " | " + pos[1] + " | " + pos[2] + "\n" + pos[3] + " | " + pos[4] + " | " + pos[5] + "\n" + pos[6] + " | " + pos[7] + " | " + pos[8] + "\n");
+    }
+
+    public static boolean CheckPositon(char[] pos, int XYpos) {
+        boolean check=false;
+        if (pos[XYpos-1] == 'X' || pos[XYpos-1] == 'O') {
+            System.out.println("THIS POSITION IS ALREADY TAKEN BY YOU OR ANOTHER PLAYER");
+            PrintBoard(pos);
+            check = false;
+        } else {
+            check = true;
+        }
+        return check;
+    }
+
+    public static void PlayerX(char[] pos) {
+        Scanner scan = new Scanner(System.in);
+        int Xpos;
+        do {
+            System.out.println("type the numeric posiition you to place your X");
+            Xpos = scan.nextInt();
+        } while (CheckPositon(pos, Xpos) == false);
+        pos[Xpos - 1] = 'X';
+        PrintBoard(pos);
+    }
+
+    public static void PlayerY(char[] pos) {
+        Scanner scan = new Scanner(System.in);
+        int Ypos;
+        do {
+            System.out.println("type the numeric posiition you to place your O");
+            Ypos = scan.nextInt();
+        } while (CheckPositon(pos, Ypos) == false);
+        pos[Ypos - 1] = 'O';
+        PrintBoard(pos);
+    }
+
+    public static String Check4Victor(char[] pos) {
+       if (pos[0] == 'X' && pos[1] == 'X' && pos [2]== 'X') return"Player1";
+       if (pos[0] == 'O' && pos[1] == 'O' && pos [2]== 'O') return"Player2";
+       if (pos[3] == 'X' && pos[4] == 'X' && pos [5]== 'X') return"Player1";
+       if (pos[3] == 'O' && pos[4] == 'O' && pos [5]== 'O') return"Player2";
+       if (pos[6] == 'X' && pos[7] == 'X' && pos [8]== 'X') return"Player1";
+       if (pos[6] == 'O' && pos[7] == 'O' && pos [8]== 'O') return"Player2";
+       if (pos[0] == 'X' && pos[3] == 'X' && pos [6]== 'X') return"Player1";
+       if (pos[1] == 'X' && pos[4] == 'X' && pos [7]== 'X') return"Player1";
+       if (pos[2] == 'X' && pos[5] == 'X' && pos [8]== 'X') return"Player1";
+       if (pos[0] == 'O' && pos[3] == 'O' && pos [6]== 'O') return"Player2";
+       if (pos[1] == 'O' && pos[4] == 'O' && pos [7]== 'O') return"Player2";
+       if (pos[2] == 'O' && pos[5] == 'O' && pos [8]== 'O') return"Player2";
+       if (pos[0] == 'X' && pos[4] == 'X' && pos [8]== 'X') return"Player1";
+       if (pos[0] == 'O' && pos[4] == 'O' && pos [8]== 'O') return"Player2";
+       if (pos[2] == 'X' && pos[4] == 'X' && pos [6]== 'X') return"Player1";
+       if (pos[2] == 'O' && pos[4] == 'O' && pos [6]== 'O') return"Player2";
+       return"No Winner";
+    }    
+
+    public static String Check4Tie(char[] pos) {
+        int sum=0;
+       for (int i=0;i<9;i++){
+           if (pos[i] == 'X' || pos [i] == 'O') sum+=1;  
+       }
+       if (sum == 9) return"TIE";
+       return "Not Tie";
+    }
+    
+    }
